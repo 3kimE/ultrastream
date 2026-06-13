@@ -71,7 +71,10 @@ export default async function LocaleLayout({
       className="dark"
       suppressHydrationWarning
     >
-      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground`}>
+      <body
+        className={`${inter.variable} font-sans antialiased bg-background text-foreground`}
+        suppressHydrationWarning
+      >
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

@@ -12,12 +12,12 @@ type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 export const metadata = generateSEO({ title: "My Account", noIndex: true });
 
 const NAV = [
-  { icon: LayoutDashboard, label: "Overview",    href: "/account",              active: true  },
-  { icon: Tv2,             label: "Subscription", href: "/account/subscription", active: false },
-  { icon: Wifi,            label: "Devices",      href: "/account/devices",      active: false },
-  { icon: CreditCard,      label: "Billing",      href: "/account/billing",      active: false },
-  { icon: HelpCircle,      label: "Support",      href: "/account/support",      active: false },
-  { icon: Settings,        label: "Settings",     href: "/account/settings",     active: false },
+  { icon: LayoutDashboard, label: "Overview",     href: "/account", active: true,  available: true  },
+  { icon: Tv2,             label: "Subscription", href: "#",        active: false, available: false },
+  { icon: Wifi,            label: "Devices",      href: "#",        active: false, available: false },
+  { icon: CreditCard,      label: "Billing",      href: "#",        active: false, available: false },
+  { icon: HelpCircle,      label: "Support",      href: "/contact", active: false, available: true  },
+  { icon: Settings,        label: "Settings",     href: "#",        active: false, available: false },
 ];
 
 export default async function AccountPage() {
@@ -72,20 +72,34 @@ export default async function AccountPage() {
           </div>
         </div>
         <nav className="flex-1 p-4 space-y-1">
-          {NAV.map(({ icon: Icon, label, href, active }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                active
-                  ? "bg-blue-500/15 text-blue-400"
-                  : "text-zinc-400 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {label}
-            </Link>
-          ))}
+          {NAV.map(({ icon: Icon, label, href, active, available }) =>
+            available ? (
+              <Link
+                key={label}
+                href={href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                  active
+                    ? "bg-blue-500/15 text-blue-400"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </Link>
+            ) : (
+              <div
+                key={label}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-zinc-600 cursor-default select-none"
+                title="Coming soon"
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+                <span className="ml-auto text-[9px] uppercase tracking-wider text-zinc-700 bg-white/5 px-1.5 py-0.5 rounded">
+                  soon
+                </span>
+              </div>
+            )
+          )}
         </nav>
         <div className="p-4 border-t border-white/5 flex flex-col gap-3">
           <Link href="/" className="text-xs text-zinc-500 hover:text-white transition-colors">
