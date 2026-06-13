@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { generateSEO } from "@/lib/seo";
 import type { Database } from "@/lib/supabase/types";
+import { LogoutButton } from "@/components/shared/logout-button";
 
 type Profile      = Database["public"]["Tables"]["profiles"]["Row"];
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
@@ -86,10 +87,11 @@ export default async function AccountPage() {
             </Link>
           ))}
         </nav>
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-white/5 flex flex-col gap-3">
           <Link href="/" className="text-xs text-zinc-500 hover:text-white transition-colors">
             ← Back to website
           </Link>
+          <LogoutButton />
         </div>
       </aside>
 
