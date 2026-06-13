@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "channels": "Chaînes",
+    "pricing": "Tarifs",
+    "devices": "Appareils",
+    "reseller": "Revendeur",
+    "blog": "Blog",
+    "login": "Connexion",
+    "freeTrial": "Essai Gratuit"
+  },
+  "hero": {
+    "badge": "spectateurs en streaming maintenant",
+    "headline1": "Streamez",
+    "headline2": "Chaînes",
+    "headline3": "en 4K Cristal",
+    "subheadline": "Sports, films, séries et TV mondiale — sans coupure sur tous vos appareils. 150+ pays. Essai gratuit 24h, activation instantanée.",
+    "ctaPrimary": "Démarrer l'Essai 24h Gratuit",
+    "ctaSecondary": "Voir les Tarifs",
+    "trust4k": "4K UHD",
+    "trustUptime": "99,9% Disponibilité",
+    "trustActivation": "Activation Instantanée",
+    "trustSupport": "Support 24/7"
+  },
+  "stats": {
+    "channels": "Chaînes en Direct",
+    "countries": "Pays",
+    "uptime": "Disponibilité",
+    "users": "Clients Satisfaits"
+  },
+  "features": {
+    "title": "Tout ce qu'il faut pour streamer comme un pro",
+    "subtitle": "Conçu pour ceux qui refusent de faire des compromis sur la qualité"
+  },
+  "comparison": {
+    "title": "Nous vs Câble vs Concurrents",
+    "subtitle": "Découvrez pourquoi 50 000+ clients ont choisi ULTRASTREAM"
+  },
+  "devices": {
+    "title": "Compatible avec tous vos appareils",
+    "subtitle": "Installation en quelques minutes — pas des heures. Compatible avec toutes les plateformes.",
+    "setupGuide": "Guide d'Installation"
+  },
+  "testimonials": {
+    "title": "47 000+ streamers satisfaits",
+    "subtitle": "Ne nous croyez pas sur parole"
+  },
+  "howItWorks": {
+    "title": "Opérationnel en 3 étapes",
+    "subtitle": "De l'inscription au streaming en moins de 5 minutes",
+    "step1Title": "Choisissez un abonnement",
+    "step1Desc": "Choisissez n'importe quel forfait — ou commencez par un essai gratuit de 24 heures. Sans carte bancaire.",
+    "step2Title": "Recevez vos identifiants",
+    "step2Desc": "Recevez votre URL M3U et vos codes Xtream instantanément via WhatsApp ou Telegram.",
+    "step3Title": "Commencez à streamer",
+    "step3Desc": "Ajoutez vos identifiants à n'importe quelle application IPTV et streamez 110 000+ chaînes en 4K."
+  },
+  "pricing": {
+    "title": "Choisissez un abonnement. Sans engagement.",
+    "subtitle": "Tous les abonnements incluent la liste complète des chaînes, le streaming 4K, le guide EPG et le support 24/7.",
+    "getStarted": "Commencer",
+    "perMonth": "/mois",
+    "devices": "appareil(s)",
+    "popular": "PLUS POPULAIRE",
+    "bestValue": "MEILLEUR RAPPORT",
+    "trialNote": "Commencez avec un essai gratuit 24h",
+    "guarantee": "Garantie satisfait ou remboursé 7 jours",
+    "seeAll": "Voir les 5 forfaits dont 24 mois",
+    "instantActivation": "Activation instantanée · Sans engagement",
+    "moneyBack": "Garantie remboursement 7 jours"
+  },
+  "footer": {
+    "tagline": "Streamez 110 000+ chaînes dans le monde. Sans tampon. 4K UHD.",
+    "copyright": "Tous droits réservés.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "support": "Support",
+    "legal": "Légal",
+    "channels": "Chaînes",
+    "pricingLink": "Tarifs",
+    "devices": "Appareils",
+    "freeTrial": "Essai Gratuit",
+    "status": "Statut",
+    "about": "À Propos",
+    "blog": "Blog",
+    "reseller": "Revendeur",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "howItWorks": "Comment Ça Marche",
+    "deviceGuides": "Guides Appareils",
+    "liveChat": "Chat en Direct",
+    "whatsapp": "WhatsApp",
+    "terms": "Conditions d'Utilisation",
+    "privacy": "Politique de Confidentialité",
+    "refund": "Politique de Remboursement"
+  },
+  "trial": {
+    "title": "Essayez {name} gratuitement pendant 24 heures",
+    "subtitle": "Pas de carte bancaire. Pas d'engagement. Accès complet à tout.",
+    "activateButton": "Activer mon Essai Gratuit",
+    "instantActivation": "Activation instantanée",
+    "noCard": "Sans carte bancaire",
+    "cancelAnytime": "Annulez quand vous voulez",
+    "trialsToday": "essais activés aujourd'hui"
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "subtitle": "Tout ce que vous devez savoir.",
+    "search": "Rechercher une question..."
+  },
+  "cta": {
+    "title": "Prêt à commencer le streaming ?",
+    "subtitle": "Rejoignez 47 000+ abonnés. Essai gratuit 24h — sans carte bancaire.",
+    "primary": "Démarrer l'Essai Gratuit",
+    "secondary": "Voir les Tarifs"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Notre équipe est disponible 24/7 via WhatsApp, Telegram ou email.",
+    "whatsapp": "Chatter sur WhatsApp",
+    "telegram": "Message sur Telegram",
+    "email": "Envoyer un Email"
+  },
+  "notFound": {
+    "title": "Chaîne introuvable",
+    "subtitle": "Cette page semble s'être perdue dans la diffusion. Retournons au streaming.",
+    "backHome": "Retour à l'Accueil",
+    "browseChannels": "Parcourir les Chaînes",
+    "popularPages": "Pages populaires"
+  },
+  "auth": {
+    "signIn": "Connectez-vous à votre compte",
+    "signInSubtitle": "Accédez à votre tableau de bord et abonnement",
+    "createAccount": "Créez votre compte",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPasswordTitle": "Réinitialisez votre mot de passe",
+    "forgotPasswordSubtitle": "Entrez votre email et nous vous enverrons un lien de réinitialisation.",
+    "sendResetLink": "Envoyer le Lien",
+    "backToSignIn": "Retour à la connexion",
+    "noAccount": "Pas encore de compte ?",
+    "startTrial": "Démarrer l'essai gratuit",
+    "continuePayment": "Continuer vers le Paiement →",
+    "signInButton": "Se Connecter"
+  }
+}

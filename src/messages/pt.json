@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "channels": "Canais",
+    "pricing": "Preços",
+    "devices": "Dispositivos",
+    "reseller": "Revendedor",
+    "blog": "Blog",
+    "login": "Entrar",
+    "freeTrial": "Teste Grátis"
+  },
+  "hero": {
+    "headline": "Transmita {count}+ Canais em 4K Cristal",
+    "ctaPrimary": "Iniciar Teste Grátis 24h",
+    "ctaSecondary": "Ver Planos"
+  }
+}
