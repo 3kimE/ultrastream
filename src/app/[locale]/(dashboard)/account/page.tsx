@@ -1,233 +1,144 @@
-import { redirect } from "next/navigation";
-import { Copy, Tv2, Settings, CreditCard, HelpCircle, LayoutDashboard, Wifi, Clock, AlertCircle } from "lucide-react";
+import { Tv2, Clock, Zap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { generateSEO } from "@/lib/seo";
-import type { Database } from "@/lib/supabase/types";
-import { LogoutButton } from "@/components/shared/logout-button";
+import { CopyField } from "@/components/dashboard/copy-field";
+import { MOCK_SUBSCRIPTION, MOCK_DEVICES, MOCK_ACTIVITY } from "@/lib/data/mock-account";
 
-type Profile      = Database["public"]["Tables"]["profiles"]["Row"];
-type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
+export const metadata = generateSEO({ title: "Dashboard", noIndex: true });
 
-export const metadata = generateSEO({ title: "My Account", noIndex: true });
+const sub = MOCK_SUBSCRIPTION;
 
-const NAV = [
-  { icon: LayoutDashboard, label: "Overview",     href: "/account", active: true,  available: true  },
-  { icon: Tv2,             label: "Subscription", href: "#",        active: false, available: false },
-  { icon: Wifi,            label: "Devices",      href: "#",        active: false, available: false },
-  { icon: CreditCard,      label: "Billing",      href: "#",        active: false, available: false },
-  { icon: HelpCircle,      label: "Support",      href: "/contact", active: false, available: true  },
-  { icon: Settings,        label: "Settings",     href: "#",        active: false, available: false },
-];
-
-export default async function AccountPage() {
-  const supabase = await createClient();
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  const { data: profileData } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-  const profile = profileData as Profile | null;
-
-  const { data: subscriptionData } = await supabase
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  const subscription = subscriptionData as Subscription | null;
-
-  const displayName = [profile?.first_name, profile?.last_name].filter(Boolean).join(" ") || user.email!;
-  const initials = [profile?.first_name?.[0], profile?.last_name?.[0]].filter(Boolean).join("").toUpperCase() || user.email![0].toUpperCase();
-
-  const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null;
-  const daysLeft = expiresAt
-    ? Math.max(0, Math.ceil((expiresAt.getTime() - Date.now()) / 86400000))
-    : null;
-
-  const m3uUrl = subscription?.m3u_url;
-  const xtreamUsername = subscription?.xtream_username;
-  const xtreamPassword = subscription?.xtream_password;
-  const xtreamHost     = subscription?.xtream_host;
-
+export default function AccountOverviewPage() {
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
-      <aside className="w-64 shrink-0 border-r border-white/5 bg-surface/50 flex flex-col pt-20 hidden lg:flex">
-        <div className="px-4 py-6 border-b border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full gradient-brand flex items-center justify-center text-white font-bold">
-              {initials}
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white truncate">{displayName}</p>
-              <p className="text-xs text-zinc-500 truncate">{user.email}</p>
-            </div>
+    <>
+      <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+
+      {/* Plan card */}
+      <div className="glass-card rounded-2xl p-6 border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-cyan-500/5">
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Active Plan</p>
+            <p className="text-xl font-bold text-white">{sub.planName} Subscription</p>
           </div>
+          <span className="px-3 py-1.5 rounded-full gradient-brand text-white text-xs font-bold">
+            ACTIVE
+          </span>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
-          {NAV.map(({ icon: Icon, label, href, active, available }) =>
-            available ? (
-              <Link
-                key={label}
-                href={href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-blue-500/15 text-blue-400"
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-              </Link>
-            ) : (
-              <div
-                key={label}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-zinc-600 cursor-default select-none"
-                title="Coming soon"
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-                <span className="ml-auto text-[9px] uppercase tracking-wider text-zinc-700 bg-white/5 px-1.5 py-0.5 rounded">
-                  soon
-                </span>
-              </div>
-            )
-          )}
-        </nav>
-        <div className="p-4 border-t border-white/5 flex flex-col gap-3">
-          <Link href="/" className="text-xs text-zinc-500 hover:text-white transition-colors">
-            ← Back to website
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+          {[
+            { label: "Days Remaining", value: `${sub.daysRemaining}` },
+            { label: "Expires", value: sub.expiresAt },
+            { label: "Connections", value: `${sub.connectionsInUse}/${sub.connections}` },
+            { label: "Plan Price", value: `$${sub.price}` },
+          ].map(({ label, value }) => (
+            <div key={label} className="bg-white/5 rounded-xl p-3">
+              <p className="text-xs text-zinc-500 mb-1">{label}</p>
+              <p className="font-semibold text-white text-sm">{value}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Credentials */}
+        <div className="space-y-3">
+          <p className="text-xs text-zinc-500 font-semibold uppercase tracking-widest">
+            Your IPTV Credentials
+          </p>
+          <CopyField label="M3U Playlist URL" value={sub.m3uUrl} />
+          <div className="grid sm:grid-cols-2 gap-3">
+            <CopyField label="Xtream Host" value={sub.xtreamHost} />
+            <CopyField label="Xtream Username" value={sub.xtreamUsername} />
+          </div>
+          <Link
+            href="/account/subscription"
+            className="inline-block text-xs text-blue-400 hover:text-blue-300 mt-1"
+          >
+            View full credentials & setup →
           </Link>
-          <LogoutButton />
         </div>
-      </aside>
-
-      {/* Main */}
-      <main className="flex-1 p-8 pt-24 overflow-auto">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-
-          {/* No active subscription */}
-          {!subscription && (
-            <div className="glass-card rounded-2xl p-6 border border-yellow-500/20 bg-yellow-500/5 flex items-start gap-4">
-              <AlertCircle className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-semibold text-white mb-1">No active subscription</p>
-                <p className="text-xs text-zinc-400">
-                  You don&apos;t have an active subscription yet.{" "}
-                  <Link href="/pricing" className="text-blue-400 hover:underline">Browse plans →</Link>
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Active subscription card */}
-          {subscription && (
-            <div className="glass-card rounded-2xl p-6 border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-cyan-500/5">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-xs text-zinc-500 uppercase tracking-widest mb-1">Active Plan</p>
-                  <p className="text-xl font-bold text-white">{subscription.plan_name} Subscription</p>
-                </div>
-                <span className="px-3 py-1.5 rounded-full gradient-brand text-white text-xs font-bold">ACTIVE</span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                {[
-                  { label: "Days Remaining", value: daysLeft !== null ? `${daysLeft}` : "—" },
-                  { label: "Expires",        value: expiresAt ? expiresAt.toLocaleDateString() : "—" },
-                  { label: "Connections",    value: `${subscription.connections}` },
-                  { label: "Plan Price",     value: `$${subscription.amount}` },
-                ].map(({ label, value }) => (
-                  <div key={label} className="bg-white/5 rounded-xl p-3">
-                    <p className="text-xs text-zinc-500 mb-1">{label}</p>
-                    <p className="font-semibold text-white text-sm">{value}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Credentials section */}
-              {m3uUrl ? (
-                <div className="space-y-3">
-                  <p className="text-xs text-zinc-500 font-semibold uppercase tracking-widest">Your IPTV Credentials</p>
-
-                  <CredentialRow label="M3U Playlist URL" value={m3uUrl} />
-                  {xtreamHost && xtreamUsername && (
-                    <>
-                      <CredentialRow label="Xtream Host"     value={xtreamHost}     />
-                      <CredentialRow label="Xtream Username" value={xtreamUsername} />
-                      <CredentialRow label="Xtream Password" value={xtreamPassword ?? ""} masked />
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
-                  <Clock className="w-4 h-4 text-yellow-400 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Credentials being set up</p>
-                    <p className="text-xs text-zinc-500">
-                      Your IPTV credentials will be delivered to your WhatsApp/Telegram within 15 minutes.
-                      They will also appear here once ready.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Quick links */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { href: "/devices",     label: "Setup Guides",   desc: "Configure your devices" },
-              { href: "/contact",     label: "Get Support",    desc: "Chat with our team" },
-              { href: "/pricing",     label: "Upgrade Plan",   desc: "More devices or longer term" },
-            ].map(({ href, label, desc }) => (
-              <Link
-                key={href}
-                href={href}
-                className="glass-card rounded-xl p-4 border border-white/10 hover:border-blue-500/30 transition-colors group"
-              >
-                <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">{label}</p>
-                <p className="text-xs text-zinc-500 mt-1">{desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
-
-function CredentialRow({
-  label,
-  value,
-  masked = false,
-}: {
-  label: string;
-  value: string;
-  masked?: boolean;
-}) {
-  return (
-    <div>
-      <p className="text-xs text-zinc-500 mb-1">{label}</p>
-      <div className="flex items-center gap-2">
-        <div className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-zinc-400 font-mono truncate">
-          {masked ? "••••••••" : value}
-        </div>
-        <button
-          className="px-3 py-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors"
-          aria-label="Copy"
-        >
-          <Copy className="w-4 h-4" />
-        </button>
       </div>
-    </div>
+
+      {/* Active devices */}
+      <div className="glass-card rounded-2xl p-6 border border-white/10">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-white">Active Devices</h2>
+          <span className="text-xs text-zinc-500">
+            {sub.connectionsInUse} of {sub.connections} in use
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {MOCK_DEVICES.map((d) => (
+            <div
+              key={d.name}
+              className={`rounded-xl p-3 border ${
+                d.status === "online"
+                  ? "bg-blue-500/10 border-blue-500/30"
+                  : "bg-white/[0.02] border-white/5"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-2xl">{d.type}</span>
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    d.status === "online" ? "bg-green-400" : "bg-zinc-600"
+                  }`}
+                />
+              </div>
+              <p className="text-xs font-medium text-zinc-200 truncate">{d.name}</p>
+              <p className="text-[10px] text-zinc-500 mt-0.5">{d.lastActive}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent activity */}
+      <div className="glass-card rounded-2xl p-6 border border-white/10">
+        <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-blue-400" />
+          Recent Activity
+        </h2>
+        <div className="space-y-3">
+          {MOCK_ACTIVITY.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between py-2 border-b border-white/5 last:border-0"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-white">{item.action}</p>
+                  <p className="text-xs text-zinc-500">{item.detail}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-zinc-500">
+                <Clock className="w-3 h-3" />
+                {item.time}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick links */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { href: "/devices", label: "Setup Guides", desc: "Configure your devices" },
+          { href: "/account/subscription", label: "My Subscription", desc: "Plan & credentials" },
+          { href: "/pricing", label: "Upgrade Plan", desc: "More devices or longer term" },
+        ].map(({ href, label, desc }) => (
+          <Link
+            key={href}
+            href={href}
+            className="glass-card rounded-xl p-4 border border-white/10 hover:border-blue-500/30 transition-colors group"
+          >
+            <Tv2 className="w-4 h-4 text-blue-400 mb-2" />
+            <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
+              {label}
+            </p>
+            <p className="text-xs text-zinc-500 mt-1">{desc}</p>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }
